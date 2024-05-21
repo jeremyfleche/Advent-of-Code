@@ -1,57 +1,28 @@
-texte=open('input.txt','r').read()
-open('input.txt','r').close()
+with open("input.txt") as f:
+	texte = f.read().strip()
 
-t=[]
-temp=''
-for i in texte:
-	if i==',':
-		t.append(int(temp))
-		temp=''
-	else:
-		temp+=i
-t.append(int(temp))
+liste = [int(i) for i in texte.split(",")]
 
-t[1]=12
-t[2]=2
-
-def algo(t):
-	for i in range(0,len(t),4):
-		if t[i]==99:
-			break
-		if t[i]==1:
-			t[t[i+3]]=t[t[i+1]]+t[t[i+2]]
-		if t[i]==2:
-			t[t[i+3]]=t[t[i+1]]*t[t[i+2]]
+def part1(a,b):
+	t = [i for i in liste]
+	t[1] = a
+	t[2] = b
+	i = 0
+	while t[i] != 99:
+		if t[i] == 1:
+			t[t[i+3]] = t[t[i+1]] + t[t[i+2]]
+		elif t[i] == 2:
+			t[t[i+3]] = t[t[i+1]] * t[t[i+2]]
+		i += 4
 	return t[0]
 
-print('Partie 1 :',algo(t))
+print("Partie 1 :",part1(12,2))
 
-t=[]
-temp=''
-for i in texte:
-	if i==',':
-		t.append(int(temp))
-		temp=''
-	else:
-		temp+=i
-t.append(int(temp))
+def part2():
+	# a et b doivent être des indices valides de la liste
+	for a in range(len(liste)):
+		for b in range(len(liste)):
+			if part1(a,b) == 19690720:
+				return a*100+b
 
-def copie(t):
-	res=[]
-	for i in t:
-		res.append(i)
-
-	return res
-
-res=0
-for i in range(100):
-	if res!=0:
-		break
-	for j in range(100):
-		liste=copie(t)
-		liste[1],liste[2]=i,j
-		if algo(liste)==19690720:
-			res=100*i+j
-			break
-
-print('Partie 2 :',res)
+print("Partie 1 :",part2())
