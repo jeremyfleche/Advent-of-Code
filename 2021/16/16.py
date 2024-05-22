@@ -1,72 +1,108 @@
-with open("input.txt") as f:
-	texte = f.read().strip()
+def binary(n):
+    d = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, 'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
+    n = d[n]
+    res = ""
+    while n != 0:
+        res = str(n%2) + res
+        n //= 2
+    while len(res) < 4:
+        res = "0" + res
+    return res
 
-texte = "8A004A801A8002F478"
+def dec(binaire):
+    res = 0
+    n = len(binaire)
+    for i in range(n):
+        res += int(binaire[i])* 2**(n-i-1)
+    return res
 
-def binaire(hexa):
-	d = {'A':'1010','B':'1011','C':'1100','D':'1101','E':'1110','F':'1111'}
-	try:
-		return d[hexa]
-	except:
-		s = ""
-		nombre = int(hexa)
-		while nombre != 0:
-			s += str(nombre%2)
-			nombre //= 2
-		while len(s) != 4:
-			s += "0"
+def handler(trame, index=0):
+    version = dec(trame[index:index+3])
+    typeID = dec(trame[index+3:index+6])
+    sommmeVersion = version
+    index += 6
+    if typeID == 4:
+        temp = ""
+        while trame[index] == "1":
+            temp += trame[index+1:index+5]
+            index += 5
+        temp += trame[index+1:index+5]
+        index += 5
+    else:
+        lengthID = trame[index]
+        index += 1
+        if lengthID == "0":
+            lenght = dec(trame[index:index+15])
+            index += 15
+            end = index + lenght
+            while index < end:
+                temp, index = handler(trame, index)
+                sommmeVersion += temp
+        else:
+            nb = dec(trame[index:index+11])
+            index += 11
+            for i in range(nb):
+                temp, index = handler(trame, index)
+                sommmeVersion += temp
+    return sommmeVersion, index
 
-		return s[::-1]
+def handler2(trame, index=0):
+    version = dec(trame[index:index+3])
+    typeID = dec(trame[index+3:index+6])
+    index += 6
+    if typeID == 4:
+        temp = ""
+        while trame[index] == "1":
+            temp += trame[index+1:index+5]
+            index += 5
+        temp += trame[index+1:index+5]
+        index += 5
+        return dec(temp), index
+    else:
+        lengthID = trame[index]
+        index += 1
+        liste = []
+        if lengthID == "0":
+            lenght = dec(trame[index:index+15])
+            index += 15
+            end = index + lenght
+            while index < end:
+                temp, index = handler2(trame, index)
+                liste.append(temp)
+        else:
+            nb = dec(trame[index:index+11])
+            index += 11
+            for i in range(nb):
+                temp, index = handler2(trame, index)
+                liste.append(temp)
 
-def decimal(binaire):
-	res = 0
-	for i in range(len(binaire)):
-		res += int(binaire[i])*2**(len(binaire)-i-1)
-	return res
+        if typeID == 0:
+            return sum(liste), index
+        elif typeID == 1:
+            res = 1
+            for i in liste:
+                res *= i
+            return res, index
+        elif typeID == 2:
+            return min(liste), index
+        elif typeID == 3:
+            return max(liste), index
+        elif typeID == 5:
+            return 1 if liste[0]>liste[1] else 0, index
+        elif typeID == 6:
+            return 1 if liste[0]<liste[1] else 0, index
+        elif typeID == 7:
+            return 1 if liste[0]==liste[1] else 0, index
 
-bits = ""
-for i in texte:
-	bits += binaire(i)
+if __name__ == "__main__":
+    with open("input.txt") as f:
+        texte = f.read().strip()
 
-# bits = "11101110000000001101010000001100100000100011000001100000"
+    # texte = "9C0141080250320F1802104A08"
 
-i = len(bits)-1
-while bits[i] == "0":
-	i -= 1
+    trame = ""
+    for bit in texte:
+        trame += binary(bit)
 
-bits = bits[:i+1]
-
-def longueur(liste):
-	return sum(len(i) for i in liste)
-
-def separation(bits):
-	bits_type = decimal(bits[3:6])
-	liste = []
-	while len(bits) >= 11:
-		if bits_type == 4:
-			t = 6
-			while bits[t] != '0':
-				t += 5
-			liste.append(bits[:t+5])
-			bits = bits[t+5:]
-		else:
-			I = decimal(bits[6])
-			if I == 0:
-				L = decimal(bits[7:22])
-				liste += separation(bits[22:22+L])
-				bits = bits[22+L:]
-			else:
-				L = decimal(bits[7:18])
-				liste += separation(bits[18:])
-				bits = bits[longueur(separation(bits[18:])):]
-	return liste
-
-def algo(bits):
-	res = decimal(bits[:3])
-	if decimal(bits[3:6]) == 4:
-		return res
-	for sub_packet in separation(bits):
-		res += algo(sub_packet)
-	return res
-
-print(algo(bits))
+    print("Partie 1 :",handler(trame)[0])
+    print("Partie 2 :",handler2(trame)[0])
