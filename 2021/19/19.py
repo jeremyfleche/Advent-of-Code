@@ -169,7 +169,7 @@ def orientations2(scanner):
 		temp.append((-x,y,-z))
 		temp.append((-y,-x,-z))
 		temp.append((x,-y,-z))
-		temp.append((y,x,z))
+		temp.append((y,x,-z))
 
 		# x positif
 		temp.append((-z,y,x))
