@@ -29,7 +29,6 @@ while True:
 
 position = [int(ligne.split()[-1]) for ligne in texte.splitlines()]
 score = [0, 0]
-victoire = [0, 0]
 cache = dict()
 
 def solve(position, score, player):
@@ -47,9 +46,8 @@ def solve(position, score, player):
 			for c in range(1, 4):
 				new_pos = [position[0], position[1]]
 				new_score = [score[0], score[1]]
-				new_pos[player] += a+b+c
-				if new_pos[player] > 10:
-					new_pos[player] -= 10
+				
+				new_pos[player] = new_pos[player]+a+b+c if new_pos[player]+a+b+c <= 10 else new_pos[player]+a+b+c-10 
 				new_score[player] += new_pos[player]
 
 				x,y, _ = solve(new_pos, new_score, 1-player)
