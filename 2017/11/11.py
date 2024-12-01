@@ -1,27 +1,18 @@
 with open("input.txt") as f:
 	texte = f.read().strip()
 
-texte = "ne,ne,ne"
+texte = "ne,ne,s,s"
 L = texte.split(',')
 
-def get(s,i):
-	try:
-		return s[i]
-	except:
-		return -1
+def adjacent(s1, s2):
+	direction = {'n':0,'ne':1,'se':2,'s':3,'sw':4,'nw':5}
+	return
 
 def algo(L):
-	P = []
-	res = 1
 	P = [L[0]]
-	for d in L[1:]:
-		print(P,res)
-		if P[-1][0] != d[0]:
-			res -= 1
-			P.pop()
-		else:
-			res += 1
-			P.append(d)
+	for s in L[1:]:
+
+					
 	return len(P)
 
 print(algo(L))
