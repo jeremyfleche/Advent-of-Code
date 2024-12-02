@@ -9,8 +9,7 @@ for i in L:
 		res1 += 1
 	else:
 		for j in range(len(i)):
-			temp = [k for k in i]
-			temp.pop(j)
+			temp = [i[k] for k in range(len(i)) if k!=j]
 			if all([-4<temp[j]-temp[j-1]<0 for j in range(1,len(temp))]) or all([0<temp[j]-temp[j-1]<4 for j in range(1,len(temp))]):
 				res2 += 1
 				break
