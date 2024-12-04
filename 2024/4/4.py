@@ -7,7 +7,7 @@ for i in range(-1,2):
 		if (i,j) != (0,0):
 			offsets.append((i,j))
 
-cache = set()
+res1 = 0
 mot = "XMAS"
 for i in range(len(t)):
 	for j in range(len(t[i])):
@@ -18,12 +18,12 @@ for i in range(len(t)):
 			while Q:
 				p, a, b, (da, db) = Q.pop()
 				if p == 3:
-					cache.add((i,j,a,b))
+					res1 += 1
 					continue
 				if 0<=a+da<len(t) and 0<=b+db<len(t[0]) and t[a+da][b+db] == mot[p+1]:
 					Q.append((p+1, a+da, b+db, (da,db)))
 
-print("Partie 1 :",len(cache))
+print("Partie 1 :",res1)
 
 res2 = 0
 for i in range(1, len(t)-1):
