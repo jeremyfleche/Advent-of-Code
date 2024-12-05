@@ -30,8 +30,7 @@ for line in updates:
 	if correct(line):
 		res1 += line[len(line)//2]
 	else:
-		line = sort(line)
-		res2 += line[len(line)//2]
+		res2 += sort(line)[len(line)//2]
 
 print("Partie 1 :",res1)
 print("Partie 2 :",res2)
