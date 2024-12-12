@@ -1,4 +1,3 @@
-from collections import deque
 with open("input.txt") as f:
 	texte = f.read().strip()
 
