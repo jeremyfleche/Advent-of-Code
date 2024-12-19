@@ -8,17 +8,17 @@ def isPossible(towel, patterns):
 	Q = [towel]
 	cache = set()
 	while Q:
-		remain = Q.pop()
-		if remain == "":
+		remaining = Q.pop()
+		if remaining == "":
 			return True
-		if remain in cache:
+		if remaining in cache:
 			continue
-		cache.add(remain)
+		cache.add(remaining)
 		for p in patterns:
 			n = len(p)
-			if n <= len(remain):
-				if p == remain[:n]:
-					Q.append(remain[n:])
+			if n <= len(remaining):
+				if p == remaining[:n]:
+					Q.append(remaining[n:])
 	return False
 
 def part2(towels, patterns):
