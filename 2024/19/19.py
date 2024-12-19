@@ -4,22 +4,22 @@ START_TIME = time.time()
 with open("input.txt") as f:
 	texte = f.read().strip()
 
-def isPossible(towel, patterns):
-	Q = [towel]
-	cache = set()
-	while Q:
-		remaining = Q.pop()
-		if remaining == "":
+def part1(towels, patterns):
+	cache = {}
+	def isPossible(towel):
+		if towel == "":
 			return True
-		if remaining in cache:
-			continue
-		cache.add(remaining)
+		if towel in cache:
+			return cache[towel]
+		res = False
 		for p in patterns:
 			n = len(p)
-			if n <= len(remaining):
-				if p == remaining[:n]:
-					Q.append(remaining[n:])
-	return False
+			if n <= len(towel) and p == towel[:n]:
+				res = res or isPossible(towel[n:])
+		cache[towel] = res
+		return res
+
+	return sum(isPossible(towel) for towel in towels)
 
 def part2(towels, patterns):
 	cache = {}
@@ -31,23 +31,17 @@ def part2(towels, patterns):
 		res = 0
 		for p in patterns:
 			n = len(p)
-			if n <= len(towel):
-				if p == towel[:n]:
-					res += possibility(towel[n:])
+			if n <= len(towel) and p == towel[:n]:
+				res += possibility(towel[n:])
 		cache[towel] = res
 		return res
-	res = 0
-	for i in towels:
-		res += possibility(i)
-	return res
+	
+	return sum(possibility(towel) for towel in towels)
 
 patterns = texte.split("\n\n")[0].split(", ")
 towels = texte.split("\n\n")[1].splitlines()
 
-res1 = sum([isPossible(towel, patterns) for towel in towels])
-print("Partie 1 :", res1)
-
-res2 = part2(towels, patterns)
-print("Partie 2 :", res2)
+print("Partie 1 :", part1(towels, patterns))
+print("Partie 2 :", part2(towels, patterns))
 
 print(f"[{int((time.time()-START_TIME)*1000)}ms]")
