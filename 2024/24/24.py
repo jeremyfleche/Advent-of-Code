@@ -1,6 +1,5 @@
 import time
 from collections import deque
-from functools import cache
 START_TIME = time.time()
 
 with open("input.txt") as f:
