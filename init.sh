@@ -16,6 +16,24 @@ PYTHON_FILE="$DIR/$DAY.py"
 # Crée le répertoire si nécessaire
 mkdir -p "$DIR"
 
+# Crée le fichier Python si inexistant
+if [ ! -f "$PYTHON_FILE" ]; then
+    cat > "$PYTHON_FILE" <<EOF
+import time
+START_TIME = time.time()
+
+with open("input.txt") as f:
+    texte = f.read().strip()
+
+
+
+print(f"[{int((time.time()-START_TIME)*1000)}ms]")
+EOF
+    echo "Fichier Python créé : $PYTHON_FILE"
+else
+    echo "Le fichier $PYTHON_FILE existe déjà, aucune modification."
+fi
+
 # Vérifie le cookie
 if [ ! -f ".session" ]; then
     echo "Erreur : le fichier .session est manquant (cookie de session Advent of Code)."
@@ -36,22 +54,4 @@ if [ ! -f "$INPUT_FILE" ]; then
     fi
 else
     echo "L'input existe déjà dans $INPUT_FILE, aucune modification."
-fi
-
-# Crée le fichier Python si inexistant
-if [ ! -f "$PYTHON_FILE" ]; then
-    cat > "$PYTHON_FILE" <<EOF
-import time
-START_TIME = time.time()
-
-with open("input.txt") as f:
-    texte = f.read().strip()
-
-
-
-print(f"[{int((time.time()-START_TIME)*1000)}ms]")
-EOF
-    echo "Fichier Python créé : $PYTHON_FILE"
-else
-    echo "Le fichier $PYTHON_FILE existe déjà, aucune modification."
 fi
