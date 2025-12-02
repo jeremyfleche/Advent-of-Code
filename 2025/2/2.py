@@ -5,10 +5,7 @@ with open("input.txt") as f:
     texte = f.read().strip()
 
 def concate(i, j):
-    res = ""
-    for k in range(j):
-        res += str(i)
-    return int(res)
+    return int(str(i)*j)
 
 def in_range(i,values):
     return values[0]<=i<=values[1]
