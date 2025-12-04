@@ -20,10 +20,11 @@ mkdir -p "$DIR"
 if [ ! -f "$PYTHON_FILE" ]; then
     cat > "$PYTHON_FILE" <<EOF
 import time
+from aoc import *
+
 START_TIME = time.time()
 
-with open("input.txt") as f:
-    texte = f.read().strip()
+texte = read_input("input.txt")
 
 
 
