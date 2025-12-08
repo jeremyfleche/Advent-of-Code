@@ -10,7 +10,7 @@ DAY=$1
 YEAR=$2
 DIR="$YEAR/$DAY"
 INPUT_URL="https://adventofcode.com/$YEAR/day/$DAY/input"
-INPUT_FILE="$DIR/input.txt"
+INPUT_FILE="$DIR/input"
 PYTHON_FILE="$DIR/$DAY.py"
 
 # Crée le répertoire si nécessaire
@@ -27,7 +27,7 @@ os.chdir(os.path.dirname(__file__))
 
 START_TIME = time.time()
 
-texte = read_input("input.txt")
+texte = read_input("input")
 
 
 
