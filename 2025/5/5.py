@@ -1,5 +1,5 @@
 import time
-from aoc import *
+from mymodules.aoc import *
 
 START_TIME = time.time()
 
