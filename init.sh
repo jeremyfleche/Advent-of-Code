@@ -20,7 +20,7 @@ mkdir -p "$DIR"
 if [ ! -f "$PYTHON_FILE" ]; then
     cat > "$PYTHON_FILE" <<EOF
 import time
-from aoc import *
+from mymodules.aoc import *
 from collections import deque
 import os
 os.chdir(os.path.dirname(__file__))
