@@ -31,6 +31,6 @@ res = 0
 for w in words:
 	if (w in words_0):
 		res += 1
-print(res)
+print("Partie 1 :", res)
 
 print(f"[{int((time.time()-START_TIME)*1000)}ms]")
